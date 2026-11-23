@@ -18,6 +18,10 @@ def main() -> None:
     line = ENTRY.strip()
     if not line or "\n" in line or len(line) > 200:
         raise SystemExit("entry must be one line of 1-200 characters")
+    if line != ENTRY or any(ord(ch) < 32 for ch in line):
+        raise SystemExit("entry must have no surrounding whitespace or control characters")
+    if len(line.encode("utf-8")) > 200:
+        raise SystemExit("entry must fit in 200 bytes")
     # The grader sets MAKEFUN_OUTPUT_DIR when it runs the entry; fall
     # back to /output when it is unset (e.g. a local run).
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
